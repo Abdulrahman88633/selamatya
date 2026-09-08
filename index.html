@@ -72,7 +72,7 @@
       opacity:0;animation:fadeIn 1s 0.2s forwards;
     }
     .intro h1{
-      font:400 clamp(44px,9vw,88px)/1 "Playfair Display",serif;
+      font:400 clamp(40px,8vw,88px)/1.1 "Playfair Display",serif;
       letter-spacing:-.03em;
       margin-bottom:24px;
       opacity:0;animation:fadeInUp 1s 0.4s forwards;
@@ -147,7 +147,7 @@
     .hero-content{
       width:min(1200px,100%);
       margin:auto;
-      padding:clamp(120px,15vh,180px) 32px 64px;
+      padding:clamp(120px,15vh,180px) 24px 64px;
     }
     .hero-meta{
       display:flex;align-items:center;gap:12px;
@@ -158,7 +158,7 @@
     }
     .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
     .hero h2{
-      font:400 clamp(56px,10vw,130px)/0.9 "Playfair Display",serif;
+      font:400 clamp(48px,9vw,130px)/1 "Playfair Display",serif;
       letter-spacing:-.04em;
       max-width:900px;
     }
@@ -183,14 +183,14 @@
     .scroll:hover i{width:64px;background:#fff}
 
     /* COMMON SECTION */
-    section{width:min(1200px,100%);margin:auto;padding:clamp(100px,12vw,160px) 32px}
+    section{width:min(1200px,100%);margin:auto;padding:clamp(80px,10vw,140px) 24px}
     .section-label{
       font:500 11px/1 "DM Mono",monospace;
       color:var(--muted);letter-spacing:.22em;text-transform:uppercase;
       margin-bottom:24px;
     }
     .section-title{
-      font:400 clamp(38px,6vw,72px)/1.05 "Playfair Display",serif;
+      font:400 clamp(32px,5.5vw,72px)/1.1 "Playfair Display",serif;
       letter-spacing:-.03em;
       max-width:800px;
     }
@@ -204,7 +204,7 @@
 
     /* MEMORY COLLAGE POLAROID MODERN */
     .memory-collage{
-      margin-top:70px;
+      margin-top:50px;
       position:relative;
       width:100%;
       height:760px;
@@ -225,54 +225,31 @@
       z-index: 10 !important;
     }
 
-    /* Tata letak artistik menyerupai referensi gambar */
     .memory-card:nth-child(1) {
-      width: 440px;
-      height: 560px;
-      left: 1%;
-      top: 0%;
-      transform: rotate(-5deg) translateY(30px);
-      z-index: 1;
+      width: 440px; height: 560px; left: 1%; top: 0%;
+      transform: rotate(-5deg) translateY(30px); z-index: 1;
     }
-
     .memory-card:nth-child(2) {
-      width: 320px;
-      height: 440px;
-      left: 35%;
-      top: 20%;
-      transform: rotate(3deg) translateY(40px);
-      z-index: 3;
+      width: 320px; height: 440px; left: 35%; top: 20%;
+      transform: rotate(3deg) translateY(40px); z-index: 3;
     }
-
     .memory-card:nth-child(3) {
-      width: 390px;
-      height: 500px;
-      right: 2%;
-      top: 4%;
-      transform: rotate(4deg) translateY(30px);
-      z-index: 2;
+      width: 390px; height: 500px; right: 2%; top: 4%;
+      transform: rotate(4deg) translateY(30px); z-index: 2;
     }
-
     .memory-card:nth-child(4) {
-      width: 360px;
-      height: 280px;
-      left: 52%;
-      bottom: 0%;
-      transform: rotate(-2deg) translateY(40px);
-      z-index: 4;
+      width: 360px; height: 280px; left: 52%; bottom: 0%;
+      transform: rotate(-2deg) translateY(40px); z-index: 4;
     }
 
-    /* Kondisi awal sebelum masuk layar (Gelap & artistik) */
     .memory-card img{
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       filter: brightness(0.15) contrast(1.4) saturate(0.1);
       transform: scale(1.05);
       transition: filter 1.8s var(--ease), transform 1.8s var(--ease);
     }
 
-    /* Ketika elemen masuk layar (Visible) */
     .memory-card.visible {
       transform: rotate(0deg) scale(1) translateY(0) !important;
     }
@@ -282,49 +259,37 @@
     }
 
     .memory-tag{
-      position:absolute;
-      left:18px;
-      bottom:18px;
-      z-index:5;
-      font:11px "DM Mono",monospace;
-      letter-spacing:.15em;
-      text-transform:uppercase;
-      color:#fff;
-      background:rgba(15,13,18,0.75);
-      padding:6px 12px;
-      border-radius:6px;
-      backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,0.1);
+      position:absolute; left:18px; bottom:18px; z-index:5;
+      font:11px "DM Mono",monospace; letter-spacing:.15em; text-transform:uppercase;
+      color:#fff; background:rgba(15,13,18,0.75);
+      padding:6px 12px; border-radius:6px;
+      backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1);
     }
 
     /* LETTER SECTION */
-    .letter-section{padding-top:20px}
+    .letter-section{padding-top:10px}
     .letter-wrap{
-      margin-top:60px;
-      display:grid;grid-template-columns:0.8fr 1.2fr;gap:80px;
+      margin-top:50px;
+      display:grid;grid-template-columns:0.8fr 1.2fr;gap:60px;
       align-items:start;
     }
     .letter-side{
-      position:sticky;top:60px;
+      position:sticky;top:40px;
       color:var(--muted);font-size:13px;line-height:1.9;
     }
     .letter-side strong{display:block;color:#fff;font-weight:600;margin-bottom:10px;font-size:15px}
     
     .paper{
       background:var(--paper);color:var(--ink);
-      border-radius:32px;padding:clamp(36px,6vw,72px);
+      border-radius:28px;padding:clamp(28px,6vw,72px);
       box-shadow:var(--shadow);
       position:relative;overflow:hidden;
-      transform:translateY(30px);
-      opacity:0;
+      transform:translateY(30px); opacity:0;
       transition:transform 1.2s var(--ease), opacity 1.2s var(--ease);
     }
-    .paper.visible{
-      transform:translateY(0);
-      opacity:1;
-    }
+    .paper.visible{transform:translateY(0); opacity:1}
     .paper::before{
-      content:"✦";position:absolute;right:36px;top:28px;
+      content:"✦";position:absolute;right:28px;top:24px;
       color:#c8b8c2;font-size:20px;
     }
     .paper .mini{
@@ -332,29 +297,29 @@
       text-transform:uppercase;color:#8c8087;
     }
     .paper h3{
-      font:400 clamp(40px,5.5vh,64px)/1.05 "Playfair Display",serif;
-      letter-spacing:-.03em;margin:28px 0 28px;
+      font:400 clamp(34px,5vh,64px)/1.1 "Playfair Display",serif;
+      letter-spacing:-.03em;margin:24px 0;
     }
     .paper h3 em{font-style:italic;color:#7a5c6d}
     .paper p{
-      font:400 clamp(15px,1.6vw,17px)/2 Manrope,sans-serif;
+      font:400 clamp(14px,1.5vw,17px)/1.85 Manrope,sans-serif;
       max-width:620px;color:#38333b;
     }
     .paper .signature{
-      margin-top:48px;
-      font:italic 500 24px/1.2 "Playfair Display",serif;
+      margin-top:36px;
+      font:italic 500 20px/1.2 "Playfair Display",serif;
       color:#201c24;
     }
 
     /* MUSIC PLAYER SECTION */
     .music-card{
-      margin-top:60px;
-      padding:32px;
+      margin-top:40px;
+      padding:24px;
       border:1px solid var(--line);
       border-radius:var(--radius);
       background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));
       backdrop-filter:blur(10px);
-      display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;
+      display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;
       transition:border-color 0.4s ease, box-shadow 0.4s ease;
     }
     .music-card:hover{
@@ -362,19 +327,19 @@
       box-shadow:0 20px 50px rgba(0,0,0,0.4);
     }
     .play{
-      width:64px;height:64px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);
+      width:56px;height:56px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);
       background:#fff;color:var(--ink);cursor:pointer;
-      display:grid;place-items:center;font-size:18px;
+      display:grid;place-items:center;font-size:16px;
       transition:transform 0.4s var(--ease), background 0.3s ease;
     }
     .play:hover{transform:scale(1.08);background:var(--accent)}
-    .track-title{font-weight:700;font-size:16px;letter-spacing:0.02em}
-    .track-sub{color:var(--muted);font:11px "DM Mono",monospace;margin-top:8px;letter-spacing:.1em;text-transform:uppercase}
+    .track-title{font-weight:700;font-size:15px;letter-spacing:0.02em}
+    .track-sub{color:var(--muted);font:11px "DM Mono",monospace;margin-top:6px;letter-spacing:.1em;text-transform:uppercase}
     .track-right{text-align:right}
     .time{font:11px "DM Mono",monospace;color:var(--muted)}
     .progress{
       height:4px;background:rgba(255,255,255,0.1);border-radius:99px;
-      margin-top:16px;overflow:hidden;cursor:pointer;position:relative;
+      margin-top:14px;overflow:hidden;cursor:pointer;position:relative;
     }
     .progress span{display:block;width:0;height:100%;background:#fff;transition:width 0.1s linear}
     .bars{display:flex;gap:3px;height:18px;align-items:end;margin-top:10px;justify-content:flex-end}
@@ -385,15 +350,15 @@
     /* FINALE SECTION */
     .finale{
       text-align:center;
-      padding-top:80px;padding-bottom:140px;
+      padding-top:60px;padding-bottom:100px;
     }
     .finale .section-title{margin:auto}
     .surprise-btn{
-      margin-top:40px;
+      margin-top:32px;
       border:1px solid rgba(255,255,255,0.2);
       background:#fff;color:var(--ink);
-      border-radius:999px;padding:18px 32px;
-      cursor:pointer;font-weight:600;font-size:15px;letter-spacing:0.03em;
+      border-radius:999px;padding:16px 28px;
+      cursor:pointer;font-weight:600;font-size:14px;letter-spacing:0.03em;
       transition:all 0.4s var(--ease);
     }
     .surprise-btn:hover{
@@ -403,18 +368,20 @@
       border-color:var(--accent);
     }
     .code-line{
-      margin-top:60px;color:var(--muted);
+      margin-top:40px;color:var(--muted);
       font:11px "DM Mono",monospace;letter-spacing:.12em;
+      user-select: none;
+      -webkit-user-select: none;
     }
     footer{
-      text-align:center;padding:0 32px 40px;color:rgba(255,255,255,0.3);
+      text-align:center;padding:0 24px 40px;color:rgba(255,255,255,0.3);
       font:10px "DM Mono",monospace;letter-spacing:.15em;text-transform:uppercase;
     }
 
     /* MODAL */
     .modal{
       position:fixed;inset:0;z-index:200;
-      display:grid;place-items:center;padding:24px;
+      display:grid;place-items:center;padding:20px;
       background:rgba(5,4,7,0.85);
       backdrop-filter:blur(20px);
       opacity:0;visibility:hidden;pointer-events:none;
@@ -424,7 +391,7 @@
     .modal-card{
       width:min(640px,100%);
       background:var(--paper);color:var(--ink);
-      border-radius:32px;padding:clamp(36px,7vw,64px);
+      border-radius:28px;padding:clamp(28px,6vw,56px);
       text-align:center;
       transform:translateY(25px) scale(0.96);
       transition:transform 0.6s var(--ease);
@@ -433,13 +400,13 @@
     .modal.show .modal-card{transform:none}
     .modal-card .mini{font:11px "DM Mono",monospace;color:#8c8087;letter-spacing:.18em;text-transform:uppercase}
     .modal-card h3{
-      font:400 clamp(38px,6vw,64px)/1.05 "Playfair Display",serif;
-      letter-spacing:-.03em;margin:24px 0;
+      font:400 clamp(32px,5.5vw,60px)/1.1 "Playfair Display",serif;
+      letter-spacing:-.03em;margin:20px 0;
     }
     .modal-card h3 em{font-style:italic;color:#7a5c6d}
-    .modal-card p{color:#4a424e;font-size:15px;line-height:1.9}
+    .modal-card p{color:#4a424e;font-size:14px;line-height:1.8}
     .close{
-      margin-top:32px;border:1px solid #d0c4cc;background:transparent;
+      margin-top:28px;border:1px solid #d0c4cc;background:transparent;
       border-radius:999px;padding:12px 24px;cursor:pointer;color:#302a33;
       font-weight:500;font-size:13px;letter-spacing:0.05em;
       transition:all 0.3s ease;
@@ -458,30 +425,32 @@
     /* RESPONSIVE MOBILE FIXES */
     @media(max-width:960px){
       .memory-collage{
-        height: auto;
+        height: auto !important;
         display: flex;
         flex-direction: column;
-        gap: 24px;
-        margin-top: 50px;
+        gap: 20px;
+        margin-top: 36px;
       }
       .memory-card{
         position: relative !important;
         width: 100% !important;
-        height: 80vw !important;
+        height: 75vw !important;
+        max-height: 400px;
         left: auto !important;
         top: auto !important;
         right: auto !important;
         bottom: auto !important;
         transform: none !important;
       }
-      .letter-wrap{display:block;margin-top:40px}
-      .letter-side{position:static;margin-bottom:30px}
+      .letter-wrap{display:block;margin-top:36px}
+      .letter-side{position:static;margin-bottom:24px}
     }
 
     @media(max-width:768px){
-      .music-card{grid-template-columns:auto 1fr;gap:16px;padding:20px}
+      .music-card{grid-template-columns:auto 1fr;gap:16px;padding:18px}
       .track-right{grid-column:2;text-align:left;display:flex;justify-content:space-between;align-items:center;margin-top:8px}
       .bars{display:none}
+      .hero-content{padding-top:100px}
     }
   </style>
 </head>
@@ -584,6 +553,8 @@
         </div>
       </div>
       <audio id="audio" preload="metadata" src="lagu-ulang-tahun.mp3"></audio>
+    </section>
+
     <section class="finale">
       <div class="section-label reveal">04 · one last thing</div>
       <h2 class="section-title reveal">There's something<br><em>waiting here.</em></h2>
@@ -772,6 +743,7 @@
 
     function launchCelebration() {
       if (running) return;
+      running = pemrosesan => {}; // safe check
       running = true;
       burst(innerWidth * 0.25, innerHeight * 0.35);
       setTimeout(() => burst(innerWidth * 0.75, innerHeight * 0.3), 250);
