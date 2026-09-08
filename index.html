@@ -1,1773 +1,811 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A Little Something For You ✦</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#08070a">
+  <meta name="description" content="A little corner of the internet made especially for Indah Wahyuni.">
+  <title>Untuk Indah Wahyuni</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Lucide -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Manrope', 'sans-serif'],
-            display: ['Playfair Display', 'serif'],
-            mono: ['DM Mono', 'monospace']
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --bg: #070708;
-      --text: #f4f0ea;
-      --muted: #aaa39a;
-      --line: rgba(255,255,255,.12);
-      --glass: rgba(255,255,255,.055);
+    :root{
+      --bg:#08070a;
+      --paper:#f5f0eb;
+      --ink:#141217;
+      --muted:#9e97a2;
+      --line:rgba(255,255,255,0.08);
+      --white:#ffffff;
+      --accent:#e6c3d0;
+      --accent-glow:rgba(230,195,208,0.15);
+      --shadow:0 40px 100px rgba(0,0,0,0.6);
+      --radius:32px;
+      --ease:cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
-      box-sizing: border-box;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);
+      color:var(--white);
+      font-family:'Manrope',system-ui,sans-serif;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
     }
+    body.locked{overflow:hidden}
+    img{display:block;width:100%}
+    button{font:inherit}
+    a{color:inherit;text-decoration:none}
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Manrope', sans-serif;
-      overflow-x: hidden;
-    }
-
-    body.locked {
-      overflow: hidden;
-    }
-
-    ::selection {
-      background: rgba(255,255,255,.2);
-    }
-
-    /* =========================
-       NOISE
-    ========================== */
-
-    body::before {
-      content: "";
+    /* BACKGROUND AMBIENT GLOW */
+    .ambient-glow {
       position: fixed;
-      inset: 0;
+      top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
-      z-index: 9998;
-      opacity: .055;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+      z-index: -10;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(230, 195, 208, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(185, 165, 210, 0.04) 0%, transparent 40%),
+        var(--bg);
     }
 
-    /* =========================
-       INTRO
-    ========================== */
-
-    #intro {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      background: #050506;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition:
-        opacity 1s cubic-bezier(.77,0,.18,1),
-        visibility 1s;
+    /* INTRO */
+    .intro{
+      position:fixed;inset:0;z-index:100;
+      display:grid;place-items:center;
+      min-height:100svh;
+      padding:24px;
+      background:var(--bg);
+      transition:opacity 1.2s var(--ease),visibility 1.2s;
+    }
+    .intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+    .intro-inner{text-align:center;max-width:680px;transform:translateY(0);transition:transform 1.2s var(--ease)}
+    .intro.hide .intro-inner{transform:translateY(-30px)}
+    
+    .eyebrow{
+      font:500 11px/1 "DM Mono",monospace;
+      letter-spacing:.25em;text-transform:uppercase;color:var(--muted);
+      margin-bottom:28px;
+      opacity:0;animation:fadeIn 1s 0.2s forwards;
+    }
+    .intro h1{
+      font:400 clamp(44px,9vw,88px)/1 "Playfair Display",serif;
+      letter-spacing:-.03em;
+      margin-bottom:24px;
+      opacity:0;animation:fadeInUp 1s 0.4s forwards;
+    }
+    .intro h1 em{font-style:italic;color:var(--accent)}
+    .intro p{
+      color:var(--muted);
+      font-size:15px;line-height:1.8;
+      max-width:440px;margin:0 auto 38px;
+      opacity:0;animation:fadeInUp 1s 0.6s forwards;
+    }
+    .open-btn{
+      border:1px solid rgba(255,255,255,0.15);
+      background:rgba(255,255,255,0.03);
+      color:#fff;
+      padding:16px 28px;
+      border-radius:999px;
+      cursor:pointer;
+      display:inline-flex;align-items:center;gap:14px;
+      font-weight:500;font-size:14px;letter-spacing:0.05em;
+      transition:all 0.5s var(--ease);
+      opacity:0;animation:fadeInUp 1s 0.8s forwards;
+    }
+    .open-btn:hover{
+      background:#fff;color:var(--ink);
+      border-color:#fff;
+      transform:translateY(-4px);
+      box-shadow:0 15px 30px rgba(255,255,255,0.1);
+    }
+    .open-btn span:last-child{font-size:16px;transition:transform 0.3s ease}
+    .open-btn:hover span:last-child{transform:translateX(4px)}
+    
+    .intro-note{
+      margin-top:28px!important;
+      font:400 10px/1.6 "DM Mono",monospace!important;
+      letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.3)!important;
     }
 
-    #intro.hide {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+    @keyframes fadeIn{to{opacity:1}}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+    /* PAGE */
+    .page{opacity:0;transform:translateY(30px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
+    .page.ready{opacity:1;transform:none}
+
+    /* HERO */
+    .hero{
+      position:relative;
+      min-height:100svh;
+      display:flex;align-items:flex-end;
+      isolation:isolate;
+      overflow:hidden;
+    }
+    .hero-media{
+      position:absolute;inset:0;z-index:-2;
+      background:#121015;
+    }
+    .hero-media img{
+      width:100%;height:100%;object-fit:cover;
+      object-position:center center;
+      transform:scale(1.05);
+      transition:transform 2.5s var(--ease);
+    }
+    .page.ready .hero-media img{transform:scale(1)}
+    
+    .hero::before{
+      content:"";position:absolute;inset:0;z-index:-1;
+      background:
+        linear-gradient(180deg, rgba(8,7,10,0.1) 0%, rgba(8,7,10,0.4) 50%, rgba(8,7,10,0.95) 100%),
+        linear-gradient(90deg, rgba(8,7,10,0.6) 0%, transparent 70%);
+    }
+    .hero-content{
+      width:min(1200px,100%);
+      margin:auto;
+      padding:clamp(120px,15vh,180px) 32px 64px;
+    }
+    .hero-meta{
+      display:flex;align-items:center;gap:12px;
+      font:500 11px/1 "DM Mono",monospace;
+      letter-spacing:.2em;text-transform:uppercase;
+      color:rgba(255,255,255,0.7);
+      margin-bottom:20px;
+    }
+    .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+    .hero h2{
+      font:400 clamp(56px,10vw,130px)/0.9 "Playfair Display",serif;
+      letter-spacing:-.04em;
+      max-width:900px;
+    }
+    .hero h2 em{font-style:italic;color:var(--accent)}
+    .hero-sub{
+      max-width:520px;
+      margin:28px 0 0;
+      color:rgba(255,255,255,0.8);
+      font-size:clamp(14px,1.5vw,17px);
+      line-height:1.85;
+      font-weight:400;
+    }
+    .hero-sub strong{color:#fff;font-weight:600}
+    .scroll{
+      margin-top:48px;
+      display:flex;align-items:center;gap:14px;
+      color:rgba(255,255,255,0.5);
+      font:11px "DM Mono",monospace;
+      letter-spacing:.2em;text-transform:uppercase;
+    }
+    .scroll i{display:block;width:48px;height:1px;background:rgba(255,255,255,0.3);transition:width 0.3s ease}
+    .scroll:hover i{width:64px;background:#fff}
+
+    /* COMMON SECTION */
+    section{width:min(1200px,100%);margin:auto;padding:clamp(100px,12vw,160px) 32px}
+    .section-label{
+      font:500 11px/1 "DM Mono",monospace;
+      color:var(--muted);letter-spacing:.22em;text-transform:uppercase;
+      margin-bottom:24px;
+    }
+    .section-title{
+      font:400 clamp(38px,6vw,72px)/1.05 "Playfair Display",serif;
+      letter-spacing:-.03em;
+      max-width:800px;
+    }
+    .section-title em{font-style:italic;color:var(--accent)}
+    .section-lead{
+      margin-top:24px;
+      max-width:580px;
+      color:var(--muted);
+      font-size:15px;line-height:1.9;
     }
 
-    .intro-glow {
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        rgba(255,255,255,.07),
-        transparent 65%
-      );
-      filter: blur(20px);
-      animation: breathe 5s ease-in-out infinite;
+    /* MEMORY COLLAGE POLAROID MODERN */
+    .memory-collage{
+      margin-top:70px;
+      position:relative;
+      width:100%;
+      height:760px;
     }
 
-    @keyframes breathe {
-      0%,100% {
-        transform: scale(.9);
-        opacity: .5;
-      }
-      50% {
-        transform: scale(1.1);
-        opacity: 1;
-      }
+    .memory-card{
+      position:absolute;
+      background:#16141a;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 30px 70px rgba(0,0,0,0.5);
+      border:1px solid rgba(255,255,255,0.08);
+      transition:transform 1.6s var(--ease), filter 1.6s var(--ease), box-shadow 0.6s var(--ease);
     }
 
-    .intro-card {
-      position: relative;
-      width: min(90%, 620px);
-      padding: 60px 35px;
-      text-align: center;
+    .memory-card:hover {
+      box-shadow:0 40px 90px rgba(0,0,0,0.7);
+      z-index: 10 !important;
     }
 
-    .intro-small {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: .28em;
-      text-transform: uppercase;
-      color: #85817b;
-      margin-bottom: 25px;
+    /* Tata letak artistik menyerupai referensi gambar */
+    .memory-card:nth-child(1) {
+      width: 440px;
+      height: 560px;
+      left: 1%;
+      top: 0%;
+      transform: rotate(-5deg) translateY(30px);
+      z-index: 1;
     }
 
-    .intro-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(45px, 9vw, 90px);
-      line-height: .95;
-      font-weight: 500;
-      letter-spacing: -.04em;
-    }
-
-    .intro-title em {
-      color: #b8b0a5;
-    }
-
-    .open-btn {
-      margin-top: 42px;
-      border: 1px solid rgba(255,255,255,.2);
-      background: rgba(255,255,255,.045);
-      backdrop-filter: blur(15px);
-      border-radius: 100px;
-      padding: 15px 23px 15px 27px;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      gap: 15px;
-      font-size: 13px;
-      transition: .4s ease;
-    }
-
-    .open-btn:hover {
-      background: white;
-      color: black;
-      transform: translateY(-3px);
-      box-shadow: 0 20px 60px rgba(255,255,255,.12);
-    }
-
-    .open-btn span {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: rgba(255,255,255,.1);
-      transition: .4s;
-    }
-
-    .open-btn:hover span {
-      background: black;
-      color: white;
-    }
-
-    /* =========================
-       PAGE
-    ========================== */
-
-    #page {
-      opacity: 0;
-      transition: opacity 1.4s ease;
-    }
-
-    #page.visible {
-      opacity: 1;
-    }
-
-    /* =========================
-       TOP NAV
-    ========================== */
-
-    .topbar {
-      position: fixed;
-      z-index: 100;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5vw;
-      mix-blend-mode: normal;
-      pointer-events: none;
-    }
-
-    .brand {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.65);
-    }
-
-    .chapter {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      color: rgba(255,255,255,.35);
-      letter-spacing: .15em;
-    }
-
-    /* =========================
-       HERO
-    ========================== */
-
-    .hero {
-      min-height: 100svh;
-      position: relative;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    .hero-image {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(
-          90deg,
-          rgba(5,5,6,.96) 0%,
-          rgba(5,5,6,.75) 40%,
-          rgba(5,5,6,.3) 100%
-        ),
-        linear-gradient(
-          0deg,
-          #070708 0%,
-          transparent 35%,
-          rgba(0,0,0,.15) 100%
-        ),
-        url("studio-1.jpg");
-
-      background-size: cover;
-      background-position: center;
-      transform: scale(1.06);
-      animation: heroZoom 12s ease-out forwards;
-      filter: saturate(.75);
-    }
-
-    @keyframes heroZoom {
-      from {
-        transform: scale(1.12);
-      }
-      to {
-        transform: scale(1.02);
-      }
-    }
-
-    .hero-orb {
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      right: -180px;
+    .memory-card:nth-child(2) {
+      width: 320px;
+      height: 440px;
+      left: 35%;
       top: 20%;
-      background: radial-gradient(
-        circle,
-        rgba(255,255,255,.1),
-        transparent 65%
-      );
-      filter: blur(40px);
-      pointer-events: none;
+      transform: rotate(3deg) translateY(40px);
+      z-index: 3;
     }
 
-    .hero-content {
-      position: relative;
+    .memory-card:nth-child(3) {
+      width: 390px;
+      height: 500px;
+      right: 2%;
+      top: 4%;
+      transform: rotate(4deg) translateY(30px);
       z-index: 2;
-      width: 90%;
-      max-width: 1400px;
-      margin: auto;
-      padding-top: 70px;
     }
 
-    .eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.55);
-      margin-bottom: 30px;
+    .memory-card:nth-child(4) {
+      width: 360px;
+      height: 280px;
+      left: 52%;
+      bottom: 0%;
+      transform: rotate(-2deg) translateY(40px);
+      z-index: 4;
     }
 
-    .eyebrow::before {
-      content: "";
-      width: 35px;
-      height: 1px;
-      background: rgba(255,255,255,.4);
-    }
-
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-weight: 500;
-      font-size: clamp(62px, 9vw, 145px);
-      letter-spacing: -.055em;
-      line-height: .85;
-      max-width: 950px;
-    }
-
-    .hero-title span {
-      display: block;
-    }
-
-    .hero-title .italic {
-      font-style: italic;
-      color: #c5bdb2;
-      margin-left: 8vw;
-    }
-
-    .hero-description {
-      margin-top: 40px;
-      max-width: 430px;
-      margin-left: 8vw;
-      color: rgba(255,255,255,.58);
-      line-height: 1.8;
-      font-size: 13px;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 35px;
-      left: 5vw;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      color: rgba(255,255,255,.35);
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-    }
-
-    .scroll-line {
-      width: 60px;
-      height: 1px;
-      background: rgba(255,255,255,.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .scroll-line::after {
-      content: "";
-      position: absolute;
-      width: 25px;
-      height: 1px;
-      background: white;
-      left: -25px;
-      animation: scrollLine 2s ease-in-out infinite;
-    }
-
-    @keyframes scrollLine {
-      0% { left: -25px; }
-      100% { left: 60px; }
-    }
-
-    /* =========================
-       SECTIONS
-    ========================== */
-
-    .section {
-      position: relative;
-      width: 90%;
-      max-width: 1400px;
-      margin: auto;
-      padding: 160px 0;
-    }
-
-    .section-number {
-      font-family: 'DM Mono', monospace;
-      color: rgba(255,255,255,.25);
-      font-size: 10px;
-      letter-spacing: .2em;
-      margin-bottom: 25px;
-    }
-
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(42px, 6vw, 85px);
-      line-height: 1;
-      letter-spacing: -.04em;
-      max-width: 800px;
-    }
-
-    .section-title em {
-      color: #a9a197;
-    }
-
-    /* =========================
-       MEMORY COLLAGE
-    ========================== */
-
-    .memory-grid {
-      position: relative;
-      min-height: 850px;
-      margin-top: 90px;
-    }
-
-    .memory {
-      position: absolute;
-      overflow: hidden;
-      background: #111;
-      box-shadow: 0 30px 80px rgba(0,0,0,.4);
-      transition:
-        transform .7s cubic-bezier(.16,1,.3,1),
-        filter .5s;
-      cursor: pointer;
-    }
-
-    .memory img {
+    /* Kondisi awal sebelum masuk layar (Gelap & artistik) */
+    .memory-card img{
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: grayscale(100%);
-      transition:
-        filter .7s ease,
-        transform 1s cubic-bezier(.16,1,.3,1);
+      filter: brightness(0.15) contrast(1.4) saturate(0.1);
+      transform: scale(1.05);
+      transition: filter 1.8s var(--ease), transform 1.8s var(--ease);
     }
 
-    .memory:hover img {
-      filter: grayscale(0%);
-      transform: scale(1.07);
+    /* Ketika elemen masuk layar (Visible) */
+    .memory-card.visible {
+      transform: rotate(0deg) scale(1) translateY(0) !important;
+    }
+    .memory-card.visible img {
+      filter: brightness(1) contrast(1) saturate(1) !important;
+      transform: scale(1) !important;
     }
 
-    .memory:hover {
-      z-index: 10;
+    .memory-tag{
+      position:absolute;
+      left:18px;
+      bottom:18px;
+      z-index:5;
+      font:11px "DM Mono",monospace;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      color:#fff;
+      background:rgba(15,13,18,0.75);
+      padding:6px 12px;
+      border-radius:6px;
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.1);
     }
 
-    .memory-1 {
-      width: min(38vw, 460px);
-      height: min(53vw, 610px);
-      left: 2%;
-      top: 0;
-      transform: rotate(-4deg);
+    /* LETTER SECTION */
+    .letter-section{padding-top:20px}
+    .letter-wrap{
+      margin-top:60px;
+      display:grid;grid-template-columns:0.8fr 1.2fr;gap:80px;
+      align-items:start;
+    }
+    .letter-side{
+      position:sticky;top:60px;
+      color:var(--muted);font-size:13px;line-height:1.9;
+    }
+    .letter-side strong{display:block;color:#fff;font-weight:600;margin-bottom:10px;font-size:15px}
+    
+    .paper{
+      background:var(--paper);color:var(--ink);
+      border-radius:32px;padding:clamp(36px,6vw,72px);
+      box-shadow:var(--shadow);
+      position:relative;overflow:hidden;
+      transform:translateY(30px);
+      opacity:0;
+      transition:transform 1.2s var(--ease), opacity 1.2s var(--ease);
+    }
+    .paper.visible{
+      transform:translateY(0);
+      opacity:1;
+    }
+    .paper::before{
+      content:"✦";position:absolute;right:36px;top:28px;
+      color:#c8b8c2;font-size:20px;
+    }
+    .paper .mini{
+      font:500 11px "DM Mono",monospace;letter-spacing:.18em;
+      text-transform:uppercase;color:#8c8087;
+    }
+    .paper h3{
+      font:400 clamp(40px,5.5vh,64px)/1.05 "Playfair Display",serif;
+      letter-spacing:-.03em;margin:28px 0 28px;
+    }
+    .paper h3 em{font-style:italic;color:#7a5c6d}
+    .paper p{
+      font:400 clamp(15px,1.6vw,17px)/2 Manrope,sans-serif;
+      max-width:620px;color:#38333b;
+    }
+    .paper .signature{
+      margin-top:48px;
+      font:italic 500 24px/1.2 "Playfair Display",serif;
+      color:#201c24;
     }
 
-    .memory-2 {
-      width: min(28vw, 360px);
-      height: min(38vw, 470px);
-      left: 32%;
-      top: 23%;
-      transform: rotate(5deg);
+    /* MUSIC PLAYER SECTION */
+    .music-card{
+      margin-top:60px;
+      padding:32px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));
+      backdrop-filter:blur(10px);
+      display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;
+      transition:border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    .music-card:hover{
+      border-color:rgba(255,255,255,0.2);
+      box-shadow:0 20px 50px rgba(0,0,0,0.4);
+    }
+    .play{
+      width:64px;height:64px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);
+      background:#fff;color:var(--ink);cursor:pointer;
+      display:grid;place-items:center;font-size:18px;
+      transition:transform 0.4s var(--ease), background 0.3s ease;
+    }
+    .play:hover{transform:scale(1.08);background:var(--accent)}
+    .track-title{font-weight:700;font-size:16px;letter-spacing:0.02em}
+    .track-sub{color:var(--muted);font:11px "DM Mono",monospace;margin-top:8px;letter-spacing:.1em;text-transform:uppercase}
+    .track-right{text-align:right}
+    .time{font:11px "DM Mono",monospace;color:var(--muted)}
+    .progress{
+      height:4px;background:rgba(255,255,255,0.1);border-radius:99px;
+      margin-top:16px;overflow:hidden;cursor:pointer;position:relative;
+    }
+    .progress span{display:block;width:0;height:100%;background:#fff;transition:width 0.1s linear}
+    .bars{display:flex;gap:3px;height:18px;align-items:end;margin-top:10px;justify-content:flex-end}
+    .bars i{display:block;width:3px;background:rgba(255,255,255,0.4);height:35%;animation:barsAnim 1.2s ease-in-out infinite alternate}
+    .bars i:nth-child(2){animation-delay:.2s;height:75%}.bars i:nth-child(3){animation-delay:.4s;height:50%}.bars i:nth-child(4){animation-delay:.1s;height:90%}.bars i:nth-child(5){animation-delay:.3s;height:60%}
+    @keyframes barsAnim{to{transform:scaleY(0.2)}}
+
+    /* FINALE SECTION */
+    .finale{
+      text-align:center;
+      padding-top:80px;padding-bottom:140px;
+    }
+    .finale .section-title{margin:auto}
+    .surprise-btn{
+      margin-top:40px;
+      border:1px solid rgba(255,255,255,0.2);
+      background:#fff;color:var(--ink);
+      border-radius:999px;padding:18px 32px;
+      cursor:pointer;font-weight:600;font-size:15px;letter-spacing:0.03em;
+      transition:all 0.4s var(--ease);
+    }
+    .surprise-btn:hover{
+      transform:translateY(-4px);
+      box-shadow:0 20px 50px rgba(255,255,255,0.15);
+      background:var(--accent);
+      border-color:var(--accent);
+    }
+    .code-line{
+      margin-top:60px;color:var(--muted);
+      font:11px "DM Mono",monospace;letter-spacing:.12em;
+    }
+    footer{
+      text-align:center;padding:0 32px 40px;color:rgba(255,255,255,0.3);
+      font:10px "DM Mono",monospace;letter-spacing:.15em;text-transform:uppercase;
     }
 
-    .memory-3 {
-      width: min(30vw, 390px);
-      height: min(40vw, 500px);
-      right: 8%;
-      top: 2%;
-      transform: rotate(3deg);
+    /* MODAL */
+    .modal{
+      position:fixed;inset:0;z-index:200;
+      display:grid;place-items:center;padding:24px;
+      background:rgba(5,4,7,0.85);
+      backdrop-filter:blur(20px);
+      opacity:0;visibility:hidden;pointer-events:none;
+      transition:opacity 0.5s var(--ease), visibility 0.5s;
     }
-
-    .memory-4 {
-      width: min(25vw, 320px);
-      height: min(35vw, 420px);
-      right: 27%;
-      bottom: 0;
-      transform: rotate(-6deg);
+    .modal.show{opacity:1;visibility:visible;pointer-events:auto}
+    .modal-card{
+      width:min(640px,100%);
+      background:var(--paper);color:var(--ink);
+      border-radius:32px;padding:clamp(36px,7vw,64px);
+      text-align:center;
+      transform:translateY(25px) scale(0.96);
+      transition:transform 0.6s var(--ease);
+      box-shadow:0 40px 120px rgba(0,0,0,0.6);
     }
-
-    .memory-label {
-      position: absolute;
-      left: 18px;
-      bottom: 18px;
-      padding: 8px 11px;
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-      font-family: 'DM Mono', monospace;
-      font-size: 8px;
-      letter-spacing: .12em;
-      color: rgba(255,255,255,.75);
-      text-transform: uppercase;
+    .modal.show .modal-card{transform:none}
+    .modal-card .mini{font:11px "DM Mono",monospace;color:#8c8087;letter-spacing:.18em;text-transform:uppercase}
+    .modal-card h3{
+      font:400 clamp(38px,6vw,64px)/1.05 "Playfair Display",serif;
+      letter-spacing:-.03em;margin:24px 0;
     }
-
-    /* =========================
-       LETTER
-    ========================== */
-
-    .letter-section {
-      display: grid;
-      grid-template-columns: .7fr 1.3fr;
-      gap: 10vw;
-      align-items: start;
+    .modal-card h3 em{font-style:italic;color:#7a5c6d}
+    .modal-card p{color:#4a424e;font-size:15px;line-height:1.9}
+    .close{
+      margin-top:32px;border:1px solid #d0c4cc;background:transparent;
+      border-radius:999px;padding:12px 24px;cursor:pointer;color:#302a33;
+      font-weight:500;font-size:13px;letter-spacing:0.05em;
+      transition:all 0.3s ease;
     }
+    .close:hover{background:#141217;color:#fff;border-color:#141217}
 
-    .letter-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .2em;
-      color: rgba(255,255,255,.35);
+    #fx{position:fixed;inset:0;z-index:150;pointer-events:none}
+
+    /* REVEAL ANIMATION UTILS */
+    .reveal{
+      opacity:0;transform:translateY(35px);
+      transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);
     }
-
-    .letter {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(25px, 3vw, 43px);
-      line-height: 1.5;
-      color: #d9d3ca;
-    }
-
-    .letter .highlight {
-      color: white;
-      font-style: italic;
-    }
-
-    .letter-sign {
-      margin-top: 45px;
-      font-family: 'DM Mono', monospace;
-      color: rgba(255,255,255,.35);
-      font-size: 10px;
-      letter-spacing: .15em;
-    }
-
-    /* =========================
-       MUSIC
-    ========================== */
-
-    .music-section {
-      min-height: 80vh;
-      display: flex;
-      align-items: center;
-    }
-
-    .music-card {
-      width: 100%;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 45px 0;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: 40px;
-    }
-
-    .music-meta {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
-    .vinyl {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background:
-        repeating-radial-gradient(
-          circle,
-          #181818 0px,
-          #181818 2px,
-          #292929 3px,
-          #101010 5px
-        );
-      display: grid;
-      place-items: center;
-      box-shadow: 0 15px 40px rgba(0,0,0,.4);
-    }
-
-    .vinyl.playing {
-      animation: spin 5s linear infinite;
-    }
-
-    .vinyl::after {
-      content: "";
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #777;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .music-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 25px;
-    }
-
-    .music-sub {
-      margin-top: 5px;
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      color: rgba(255,255,255,.35);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-
-    .music-control {
-      width: 58px;
-      height: 58px;
-      border: 1px solid rgba(255,255,255,.2);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      transition: .3s;
-    }
-
-    .music-control:hover {
-      background: white;
-      color: black;
-      transform: scale(1.08);
-    }
-
-    .equalizer {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      height: 28px;
-      margin-top: 20px;
-    }
-
-    .bar {
-      width: 2px;
-      height: 7px;
-      background: #aaa;
-      animation: eq .7s ease-in-out infinite alternate;
-      animation-play-state: paused;
-    }
-
-    .playing-bars .bar {
-      animation-play-state: running;
-    }
-
-    .bar:nth-child(2) { animation-delay: .15s; }
-    .bar:nth-child(3) { animation-delay: .3s; }
-    .bar:nth-child(4) { animation-delay: .1s; }
-    .bar:nth-child(5) { animation-delay: .25s; }
-    .bar:nth-child(6) { animation-delay: .4s; }
-
-    @keyframes eq {
-      from { height: 5px; }
-      to { height: 26px; }
-    }
-
-    /* =========================
-       SURPRISE
-    ========================== */
-
-    .surprise-section {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      position: relative;
-    }
-
-    .surprise-section::before {
-      content: "";
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        rgba(255,255,255,.055),
-        transparent 65%
-      );
-      filter: blur(20px);
-    }
-
-    .surprise-inner {
-      position: relative;
-      z-index: 2;
-    }
-
-    .surprise-small {
-      font-family: 'DM Mono', monospace;
-      color: rgba(255,255,255,.35);
-      font-size: 9px;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      margin-bottom: 25px;
-    }
-
-    .surprise-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(50px, 8vw, 110px);
-      line-height: .95;
-      letter-spacing: -.05em;
-    }
-
-    .surprise-title em {
-      color: #aaa198;
-    }
-
-    .surprise-button {
-      margin-top: 55px;
-      border: 1px solid rgba(255,255,255,.2);
-      padding: 18px 28px;
-      border-radius: 100px;
-      background: rgba(255,255,255,.04);
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      gap: 15px;
-      font-size: 12px;
-      transition: .4s;
-    }
-
-    .surprise-button:hover {
-      background: white;
-      color: black;
-      transform: translateY(-4px);
-      box-shadow: 0 25px 80px rgba(255,255,255,.12);
-    }
-
-    /* =========================
-       FOOTER
-    ========================== */
-
-    footer {
-      border-top: 1px solid var(--line);
-      width: 90%;
-      max-width: 1400px;
-      margin: auto;
-      padding: 35px 0 50px;
-      display: flex;
-      justify-content: space-between;
-      color: rgba(255,255,255,.25);
-      font-family: 'DM Mono', monospace;
-      font-size: 8px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    /* =========================
-       MODAL
-    ========================== */
-
-    #modal {
-      position: fixed;
-      inset: 0;
-      z-index: 9000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 25px;
-      background: rgba(0,0,0,.75);
-      backdrop-filter: blur(20px);
-      opacity: 0;
-      visibility: hidden;
-      transition: .5s;
-    }
-
-    #modal.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-card {
-      position: relative;
-      width: min(600px, 100%);
-      padding: 55px 45px;
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,255,255,.09),
-          rgba(255,255,255,.025)
-        );
-      border: 1px solid rgba(255,255,255,.13);
-      border-radius: 3px;
-      box-shadow: 0 40px 120px rgba(0,0,0,.6);
-      transform: translateY(30px) scale(.97);
-      transition: .6s cubic-bezier(.16,1,.3,1);
-    }
-
-    #modal.active .modal-card {
-      transform: translateY(0) scale(1);
-    }
-
-    .modal-close {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      width: 35px;
-      height: 35px;
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: rgba(255,255,255,.5);
-    }
-
-    .modal-small {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      color: rgba(255,255,255,.3);
-      letter-spacing: .2em;
-      text-transform: uppercase;
-    }
-
-    .modal-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(35px, 6vw, 65px);
-      margin-top: 20px;
-      line-height: 1;
-    }
-
-    .modal-text {
-      color: rgba(255,255,255,.55);
-      line-height: 1.8;
-      margin-top: 25px;
-      font-size: 13px;
-    }
-
-    /* =========================
-       REVEAL
-    ========================== */
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(45px);
-      transition:
-        opacity 1s cubic-bezier(.16,1,.3,1),
-        transform 1s cubic-bezier(.16,1,.3,1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================== */
-
-    @media (max-width: 768px) {
-
-      .topbar {
-        height: 65px;
-        padding: 0 6vw;
-      }
-
-      .hero-content {
-        width: 88%;
-      }
-
-      .hero-image {
-        background-position: 62% center;
-        background-image:
-          linear-gradient(
-            90deg,
-            rgba(5,5,6,.9),
-            rgba(5,5,6,.45)
-          ),
-          linear-gradient(
-            0deg,
-            #070708 0%,
-            transparent 50%
-          ),
-          url("studio-1.jpg");
-      }
-
-      .hero-title {
-        font-size: clamp(58px, 17vw, 90px);
-      }
-
-      .hero-title .italic {
-        margin-left: 2vw;
-      }
-
-      .hero-description {
-        margin-left: 2vw;
-        font-size: 12px;
-        max-width: 310px;
-      }
-
-      .section {
-        width: 88%;
-        padding: 110px 0;
-      }
-
-      .memory-grid {
-        min-height: 950px;
-      }
-
-      .memory-1 {
-        width: 63vw;
-        height: 82vw;
-        left: 0;
-      }
-
-      .memory-2 {
-        width: 50vw;
-        height: 65vw;
-        left: 42%;
-        top: 28%;
-      }
-
-      .memory-3 {
-        width: 53vw;
-        height: 70vw;
-        right: 0;
-        top: 55%;
-      }
-
-      .memory-4 {
-        width: 42vw;
-        height: 57vw;
-        left: 5%;
-        bottom: 0;
-      }
-
-      .letter-section {
-        grid-template-columns: 1fr;
-        gap: 45px;
-      }
-
-      .letter {
-        font-size: 25px;
-      }
-
-      .music-card {
-        grid-template-columns: 1fr auto;
-      }
-
-      .music-name {
-        font-size: 21px;
-      }
-
-      .music-meta {
-        gap: 15px;
-      }
-
-      .vinyl {
-        width: 58px;
-        height: 58px;
-      }
-
-      footer {
+    .reveal.visible{opacity:1;transform:none}
+
+    /* RESPONSIVE MOBILE FIXES */
+    @media(max-width:960px){
+      .memory-collage{
+        height: auto;
+        display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 24px;
+        margin-top: 50px;
       }
+      .memory-card{
+        position: relative !important;
+        width: 100% !important;
+        height: 80vw !important;
+        left: auto !important;
+        top: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+      }
+      .letter-wrap{display:block;margin-top:40px}
+      .letter-side{position:static;margin-bottom:30px}
+    }
 
-      .modal-card {
-        padding: 45px 28px;
-      }
+    @media(max-width:768px){
+      .music-card{grid-template-columns:auto 1fr;gap:16px;padding:20px}
+      .track-right{grid-column:2;text-align:left;display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+      .bars{display:none}
     }
   </style>
 </head>
 
 <body class="locked">
+  <div class="ambient-glow"></div>
 
-  <!-- =====================================================
-       INTRO
-  ====================================================== -->
-
-  <section id="intro">
-
-    <div class="intro-glow"></div>
-
-    <div class="intro-card">
-
-      <div class="intro-small">
-        a tiny internet corner
-      </div>
-
-      <h1 class="intro-title">
-        Something<br>
-        <em>for you.</em>
-      </h1>
-
-      <button id="openBtn" class="open-btn">
-        <span>
-          <i data-lucide="arrow-up-right" width="15"></i>
-        </span>
-        Buka Kejutan
+  <div class="intro" id="intro">
+    <div class="intro-inner">
+      <div class="eyebrow"><span id="introDate">11 September</span> · a little celebration</div>
+      <h1>A little something<br><em>for Indah.</em></h1>
+      <p>Karena ada beberapa momen yang rasanya terlalu sayang kalau cuma lewat begitu saja.</p>
+      <button class="open-btn" id="openBtn">
+        <span>Buka kejutan</span><span>✦</span>
       </button>
-
+      <p class="intro-note">tekan sekali untuk membuka</p>
     </div>
-
-  </section>
-
-
-  <!-- =====================================================
-       MAIN PAGE
-  ====================================================== -->
-
-  <main id="page">
-
-    <!-- TOP BAR -->
-
-    <nav class="topbar">
-      <div class="brand">
-        birthday.exe
-      </div>
-
-      <div class="chapter">
-        06 / 09 / 2026
-      </div>
-    </nav>
-
-
-    <!-- =================================================
-         HERO
-    ================================================== -->
-
-    <section class="hero">
-
-      <div class="hero-image" id="heroImage"></div>
-      <div class="hero-orb"></div>
-
-      <div class="hero-content">
-
-        <div class="eyebrow reveal">
-          today is a little different
-        </div>
-
-        <h1 class="hero-title reveal">
-
-          <span>Today</span>
-
-          <span class="italic">
-            is yours.
-          </span>
-
-        </h1>
-
-        <p class="hero-description reveal">
-          Jadi... dari pada cuma mengucapkan
-          "selamat ulang tahun", dibuatlah satu
-          sudut kecil di internet ini khusus untuk
-          merayakan hari spesialmu.
-        </p>
-
-      </div>
-
-      <div class="scroll-hint">
-        <div class="scroll-line"></div>
-        scroll to explore
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         MEMORIES
-    ================================================== -->
-
-    <section class="section">
-
-      <div class="section-number reveal">
-        01 — little memories
-      </div>
-
-      <h2 class="section-title reveal">
-        Four frames.<br>
-        <em>A thousand little moments.</em>
-      </h2>
-
-      <div class="memory-grid reveal">
-
-        <div class="memory memory-1">
-          <img src="studio-1.jpeg" alt="Memory 01">
-          <div class="memory-label">
-            frame / 01
-          </div>
-        </div>
-
-        <div class="memory memory-2">
-          <img src="studio-2.jpeg" alt="Memory 02">
-          <div class="memory-label">
-            frame / 02
-          </div>
-        </div>
-
-        <div class="memory memory-3">
-          <img src="studio-3.jpeg" alt="Memory 03">
-          <div class="memory-label">
-            frame / 03
-          </div>
-        </div>
-
-        <div class="memory memory-4">
-          <img src="studio-4.jpg" alt="Memory 04">
-          <div class="memory-label">
-            frame / 04
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         LETTER
-    ================================================== -->
-
-    <section class="section letter-section">
-
-      <div class="letter-label reveal">
-        02 — a small note
-      </div>
-
-      <div class="reveal">
-
-        <div class="letter" id="typewriter"></div>
-
-        <div class="letter-sign">
-          written somewhere between code &amp; good intentions.
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         MUSIC
-    ================================================== -->
-
-    <section class="section music-section">
-
-      <div style="width:100%">
-
-        <div class="section-number reveal">
-          03 — soundtrack
-        </div>
-
-        <div class="music-card reveal">
-
-          <div>
-
-            <div class="music-meta">
-
-              <div class="vinyl" id="vinyl"></div>
-
-              <div>
-                <div class="music-name">
-                  lagu-ulang-tahun.mp3
-                </div>
-
-                <div class="music-sub">
-                  playing something for you
-                </div>
-              </div>
-
-            </div>
-
-            <div class="equalizer" id="equalizer">
-
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-
-            </div>
-
-          </div>
-
-          <button
-            id="musicBtn"
-            class="music-control"
-            aria-label="Play pause music"
-          >
-            <i data-lucide="pause" id="musicIcon"></i>
-          </button>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         SURPRISE
-    ================================================== -->
-
-    <section class="section surprise-section">
-
-      <div class="surprise-inner">
-
-        <div class="surprise-small reveal">
-          one last thing
-        </div>
-
-        <h2 class="surprise-title reveal">
-          There's something<br>
-          <em>waiting here.</em>
-        </h2>
-
-        <button
-          id="surpriseBtn"
-          class="surprise-button reveal"
-        >
-          Open the little surprise
-
-          <i data-lucide="arrow-up-right" width="16"></i>
-
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         FOOTER
-    ================================================== -->
-
-    <footer>
-
-      <span>
-        made with code &amp; a little effort
-      </span>
-
-      <span>
-        birthday / 2026
-      </span>
-
-    </footer>
-
-  </main>
-
-
-  <!-- =====================================================
-       MODAL
-  ====================================================== -->
-
-  <div id="modal">
-
-    <div class="modal-card">
-
-      <button
-        id="closeModal"
-        class="modal-close"
-        aria-label="Close"
-      >
-        <i data-lucide="x" width="15"></i>
-      </button>
-
-      <div class="modal-small">
-        secret.txt
-      </div>
-
-      <h3 class="modal-title">
-        Happy Birthday.
-      </h3>
-
-      <p class="modal-text">
-        Semoga di umur yang baru ini, ada lebih banyak
-        hal baik yang datang, lebih banyak alasan untuk
-        tersenyum, dan lebih banyak momen yang layak
-        untuk dikenang.
-        <br><br>
-        Jangan lupa menikmati perjalananmu sendiri.
-        Kamu sudah sampai sejauh ini, dan itu cukup
-        keren.
-      </p>
-
-    </div>
-
   </div>
 
+  <main class="page" id="page">
+    <header class="hero">
+      <div class="hero-media">
+        <img class="asset" data-name="studio-1" src="studio-1.jpg" alt="Indah Wahyuni">
+      </div>
+      <div class="hero-content">
+        <div class="hero-meta"><span class="dot"></span> <span id="heroDate">11 September 2026</span> · Indah Wahyuni</div>
+        <h2>Today<br>is <em>yours.</em></h2>
+        <p class="hero-sub">Selamat ulang tahun, Indah. Dan selamat juga untuk satu pencapaian besar yang baru saja kamu lewati — <strong>wisuda pada tanggal 11.</strong></p>
+        <div class="scroll"><i></i> scroll pelan-pelan</div>
+      </div>
+    </header>
 
-  <!-- =====================================================
-       AUDIO
-  ====================================================== -->
+    <section>
+      <div class="section-label reveal">01 · the moments</div>
+      <h2 class="section-title reveal">Four frames.<br><em>So many little memories.</em></h2>
+      <p class="section-lead reveal">Satu halaman kecil untuk menyimpan beberapa potongan yang layak dirayakan — ulang tahun, hari wisuda, dan semua hal baik yang datang setelahnya.</p>
 
-  <audio
-    id="birthdayAudio"
-    src="lagu-ulang-tahun.mp3"
-    preload="auto"
-  ></audio>
+      <div class="memory-collage">
+        <div class="memory-card reveal">
+          <img class="asset" data-name="studio-1" src="studio-1.jpg" alt="Foto Indah 1">
+          <div class="memory-tag">FRAME / 01</div>
+        </div>
+        <div class="memory-card reveal">
+          <img class="asset" data-name="studio-2" src="studio-2.jpg" alt="Foto Indah 2">
+          <div class="memory-tag">FRAME / 02</div>
+        </div>
+        <div class="memory-card reveal">
+          <img class="asset" data-name="studio-3" src="studio-3.jpg" alt="Foto Indah 3">
+          <div class="memory-tag">FRAME / 03</div>
+        </div>
+        <div class="memory-card reveal">
+          <img class="asset" data-name="studio-4" src="studio-4.jpg" alt="Foto Indah 4">
+          <div class="memory-tag">FRAME / 04</div>
+        </div>
+      </div>
+    </section>
 
+    <section class="letter-section">
+      <div class="section-label reveal">02 · a small letter</div>
+      <div class="letter-wrap">
+        <div class="letter-side reveal">
+          <strong>For Indah Wahyuni</strong>
+          <span id="letterDate">11 September</span><br>
+          ulang tahun + hari wisuda<br><br>
+          Dua alasan untuk berhenti sebentar,<br>
+          melihat ke belakang, lalu tersenyum bangga.
+        </div>
+
+        <article class="paper reveal">
+          <div class="mini">happy birthday, indah ✦</div>
+          <h3>Selamat untuk<br><em>semuanya.</em></h3>
+          <p>
+            Semoga di umur yang baru, ada lebih banyak hal baik yang menemukan jalannya kepadamu.
+            Semoga setelah wisuda ini, langkahmu terasa semakin ringan, mimpi-mimpimu semakin dekat,
+            dan setiap usaha yang pernah kamu lakukan menemukan alasan untuk terasa berarti.
+          </p>
+          <p style="margin-top:20px">
+            Tidak harus selalu tahu akan ke mana. Kadang cukup terus berjalan, menikmati setiap prosesnya,
+            dan memberi diri sendiri waktu untuk tumbuh dengan tenang.
+          </p>
+          <div class="signature">— dibuat dengan sedikit kode & banyak doa baik.</div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label reveal">03 · press play</div>
+      <h2 class="section-title reveal">Satu lagu untuk<br><em>hari yang baik.</em></h2>
+
+      <div class="music-card reveal">
+        <button class="play" id="playBtn" aria-label="Putar atau jeda lagu">▶</button>
+        <div>
+          <div class="track-title">Lagu ulang tahun</div>
+          <div class="track-sub">for this little celebration</div>
+          <div class="progress" id="progress"><span id="progressFill"></span></div>
+        </div>
+        <div class="track-right">
+          <div class="time"><span id="current">0:00</span> / <span id="duration">0:00</span></div>
+          <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+      <audio id="audio" preload="metadata" src="lagu-ulang-tahun.mp3"></audio>
+    <section class="finale">
+      <div class="section-label reveal">04 · one last thing</div>
+      <h2 class="section-title reveal">There's something<br><em>waiting here.</em></h2>
+      <p class="section-lead reveal" style="margin-left:auto;margin-right:auto">
+        Sebuah tombol kecil, karena halaman ini rasanya belum lengkap kalau tidak punya satu kejutan terakhir.
+      </p>
+      <button class="surprise-btn reveal" id="surpriseBtn">Buka satu kejutan lagi →</button>
+      <div class="code-line reveal">&lt;made-with-code /&gt; &middot; for a memorable <span id="dynamicDateTag">11.09</span> (<span id="liveClock">00:00:00</span>)</div>
+    </section>
+
+    <footer>Indah Wahyuni &middot; happy birthday &middot; congratulations on your graduation</footer>
+  </main>
+
+  <canvas id="fx"></canvas>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Pesan untuk Indah">
+    <div class="modal-card">
+      <div class="mini">one more thing ✦</div>
+      <h3>Keep going,<br><em>Indah.</em></h3>
+      <p>
+        Hari ini bukan cuma tentang bertambahnya usia.
+        Ini juga tentang sejauh apa kamu sudah berjalan sampai akhirnya bisa memakai toga
+        dan merayakan satu pencapaian besar. Semoga setelah ini datang lebih banyak cerita
+        yang bahkan lebih indah dari yang kamu bayangkan.
+      </p>
+      <button class="close" id="closeModal">Tutup pelan-pelan</button>
+    </div>
+  </div>
 
   <script>
+    const body = document.body;
+    const intro = document.getElementById('intro');
+    const page = document.getElementById('page');
+    const openBtn = document.getElementById('openBtn');
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const progress = document.getElementById('progress');
+    const progressFill = document.getElementById('progressFill');
+    const current = document.getElementById('current');
+    const duration = document.getElementById('duration');
+    const modal = document.getElementById('modal');
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const closeModal = document.getElementById('closeModal');
 
-    /* ================================================
-       LUCIDE
-    ================================================= */
+    // Real-time Date and Clock Updater
+    function updateDateTime() {
+      const now = new Date();
+      const day = "11"; 
+      const months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+      const monthNum = months[now.getMonth()];
+      const year = now.getFullYear();
+      const monthStr = "September"; 
 
-    lucide.createIcons();
+      const dateTag = document.getElementById('dynamicDateTag');
+      const introDate = document.getElementById('introDate');
+      const heroDate = document.getElementById('heroDate');
+      const letterDate = document.getElementById('letterDate');
+      const liveClock = document.getElementById('liveClock');
 
+      if (dateTag) dateTag.textContent = `${day}.${monthNum}`;
+      if (introDate) introDate.textContent = `${day} ${monthStr}`;
+      if (heroDate) heroDate.textContent = `${day} ${monthStr} ${year}`;
+      if (letterDate) letterDate.textContent = `${day} ${monthStr}`;
 
-    /* ================================================
-       ELEMENTS
-    ================================================= */
-
-    const intro = document.getElementById("intro");
-    const page = document.getElementById("page");
-
-    const openBtn = document.getElementById("openBtn");
-
-    const audio = document.getElementById("birthdayAudio");
-
-    const musicBtn = document.getElementById("musicBtn");
-    const musicIcon = document.getElementById("musicIcon");
-
-    const vinyl = document.getElementById("vinyl");
-    const equalizer = document.getElementById("equalizer");
-
-    const surpriseBtn = document.getElementById("surpriseBtn");
-
-    const modal = document.getElementById("modal");
-    const closeModal = document.getElementById("closeModal");
-
-
-    /* ================================================
-       OPEN WEBSITE
-       IMPORTANT:
-       AUDIO PLAY HAPPENS INSIDE USER CLICK
-    ================================================= */
-
-    openBtn.addEventListener("click", async () => {
-
-      /*
-       * Browser audio policy:
-       * play() is intentionally called directly
-       * inside the button click.
-       */
-
-      try {
-        audio.volume = 0.8;
-        await audio.play();
-
-        setMusicState(true);
-
-      } catch (error) {
-        console.log("Audio autoplay blocked:", error);
+      if (liveClock) {
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        liveClock.textContent = `${hours}:${minutes}:${seconds}`;
       }
+    }
 
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
 
-      intro.classList.add("hide");
+    document.querySelectorAll('.asset').forEach(img => {
+      img.addEventListener('error', () => {
+        if (!img.dataset.fallback) {
+          img.dataset.fallback = '1';
+          img.src = img.src.replace(/\.jpg$/i, '.jpeg');
+        }
+      });
+    });
 
-      document.body.classList.remove("locked");
+    const formatTime = s => {
+      if (!Number.isFinite(s)) return '0:00';
+      const min = Math.floor(s / 60);
+      const sec = Math.floor(s % 60).toString().padStart(2, '0');
+      return `${min}:${sec}`;
+    };
+
+    let revealObserver;
+    openBtn.addEventListener('click', async () => {
+      try {
+        audio.volume = 0.65;
+        await audio.play();
+      } catch (_) {}
+
+      intro.classList.add('hide');
+      body.classList.remove('locked');
 
       setTimeout(() => {
-        page.classList.add("visible");
-        startAnimations();
-      }, 500);
-
-    });
-
-
-    /* ================================================
-       MUSIC STATE
-    ================================================= */
-
-    function setMusicState(isPlaying) {
-
-      if (isPlaying) {
-
-        vinyl.classList.add("playing");
-
-        equalizer.classList.add("playing-bars");
-
-        musicIcon.setAttribute("data-lucide", "pause");
-
-      } else {
-
-        vinyl.classList.remove("playing");
-
-        equalizer.classList.remove("playing-bars");
-
-        musicIcon.setAttribute("data-lucide", "play");
-
-      }
-
-      lucide.createIcons();
-
-    }
-
-
-    /* ================================================
-       MUSIC BUTTON
-    ================================================= */
-
-    musicBtn.addEventListener("click", async () => {
-
-      if (audio.paused) {
-
-        try {
-          await audio.play();
-          setMusicState(true);
-        } catch (error) {
-          console.log(error);
-        }
-
-      } else {
-
-        audio.pause();
-        setMusicState(false);
-
-      }
-
-    });
-
-
-    /* ================================================
-       AUDIO ENDED
-    ================================================= */
-
-    audio.addEventListener("ended", () => {
-      setMusicState(false);
-    });
-
-
-    /* ================================================
-       TYPEWRITER
-    ================================================= */
-
-    const message = `
-Selamat ulang tahun. ✦
-
-Semoga hari ini menjadi pengingat
-bahwa perjalananmu masih panjang,
-dan masih ada begitu banyak hal baik
-yang belum datang.
-
-Semoga tahun ini dipenuhi cerita baru,
-orang-orang baik, kesempatan baru,
-dan momen-momen kecil yang nantinya
-akan membuatmu tersenyum ketika mengingatnya.
-
-Have a beautiful year ahead.
-    `.trim();
-
-    const typewriter = document.getElementById("typewriter");
-
-    let typeIndex = 0;
-    let typeStarted = false;
-
-    function typeText() {
-
-      if (typeIndex < message.length) {
-
-        const char = message.charAt(typeIndex);
-
-        if (char === "\n") {
-          typewriter.innerHTML += "<br>";
-        } else {
-          typewriter.innerHTML += char;
-        }
-
-        typeIndex++;
-
-        setTimeout(typeText, 24);
-
-      }
-
-    }
-
-
-    /* ================================================
-       INTERSECTION OBSERVER
-    ================================================= */
-
-    const revealElements =
-      document.querySelectorAll(".reveal");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-
-        entries.forEach(entry => {
-
-          if (
-            entry.isIntersecting &&
-            !entry.target.classList.contains("visible")
-          ) {
-
-            entry.target.classList.add("visible");
-
-            if (
-              entry.target === typewriter.parentElement &&
-              !typeStarted
-            ) {
-
-              typeStarted = true;
-              typeText();
-
+        page.classList.add('ready');
+        
+        revealObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              revealObserver.unobserve(entry.target);
             }
+          });
+        }, { threshold: 0.12 });
 
-          }
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+      }, 200);
+    });
 
-        });
-
-      },
-      {
-        threshold: .12
+    playBtn.addEventListener('click', async () => {
+      if (audio.paused) {
+        try { await audio.play(); } catch (_) {}
+      } else {
+        audio.pause();
       }
-    );
+    });
 
+    audio.addEventListener('play', () => playBtn.textContent = 'Ⅱ');
+    audio.addEventListener('pause', () => playBtn.textContent = '▶');
+    audio.addEventListener('loadedmetadata', () => duration.textContent = formatTime(audio.duration));
+    audio.addEventListener('timeupdate', () => {
+      current.textContent = formatTime(audio.currentTime);
+      const percent = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+      progressFill.style.width = percent + '%';
+    });
 
-    function startAnimations() {
+    progress.addEventListener('click', e => {
+      if (!audio.duration) return;
+      const rect = progress.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      audio.currentTime = ratio * audio.duration;
+    });
 
-      revealElements.forEach(el => {
-        observer.observe(el);
+    surpriseBtn.addEventListener('click', () => {
+      modal.classList.add('show');
+      launchCelebration();
+    });
+    closeModal.addEventListener('click', () => modal.classList.remove('show'));
+    modal.addEventListener('click', e => {
+      if (e.target === modal) modal.classList.remove('show');
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') modal.classList.remove('show');
+    });
+
+    // Particle Confetti FX
+    const canvas = document.getElementById('fx');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let running = false;
+
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = innerWidth * dpr;
+      canvas.height = innerHeight * dpr;
+      canvas.style.width = innerWidth + 'px';
+      canvas.style.height = innerHeight + 'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    resizeCanvas();
+    addEventListener('resize', resizeCanvas);
+
+    function burst(x, y) {
+      for (let i=0; i<100; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const speed = 2.5 + Math.random() * 6;
+        particles.push({
+          x, y,
+          vx: Math.cos(a) * speed,
+          vy: Math.sin(a) * speed,
+          life: 80 + Math.random() * 40,
+          size: 2.5 + Math.random() * 3.5,
+          rotation: Math.random() * Math.PI,
+          spin: (Math.random() - 0.5) * 0.15
+        });
+      }
+    }
+
+    function launchCelebration() {
+      if (running) return;
+      running = true;
+      burst(innerWidth * 0.25, innerHeight * 0.35);
+      setTimeout(() => burst(innerWidth * 0.75, innerHeight * 0.3), 250);
+      setTimeout(() => burst(innerWidth * 0.5, innerHeight * 0.2), 500);
+      animate();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      particles = particles.filter(p => p.life > 0);
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.06;
+        p.vx *= 0.99;
+        p.life -= 1;
+        p.rotation += p.spin;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.globalAlpha = Math.min(1, p.life / 25);
+        ctx.fillStyle = ['#f2d6df', '#e8e1f3', '#ffffff', '#d8c0c9'][Math.floor(Math.random() * 4)];
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.8);
+        ctx.restore();
       });
 
+      if (particles.length) requestAnimationFrame(animate);
+      else {
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        running = false;
+      }
     }
-
-
-    /* ================================================
-       PARALLAX HERO
-    ================================================= */
-
-    const heroImage =
-      document.getElementById("heroImage");
-
-    window.addEventListener(
-      "scroll",
-      () => {
-
-        const scroll =
-          window.scrollY;
-
-        if (scroll < window.innerHeight) {
-
-          heroImage.style.transform =
-            `scale(1.03) translateY(${scroll * .12}px)`;
-
-        }
-
-      },
-      { passive: true }
-    );
-
-
-    /* ================================================
-       MEMORY PARALLAX
-    ================================================= */
-
-    const memories =
-      document.querySelectorAll(".memory");
-
-    window.addEventListener(
-      "mousemove",
-      (e) => {
-
-        const x =
-          (e.clientX / window.innerWidth - .5);
-
-        const y =
-          (e.clientY / window.innerHeight - .5);
-
-        memories.forEach((memory, index) => {
-
-          if (window.innerWidth < 769) return;
-
-          const amount =
-            (index + 1) * 3;
-
-          memory.style.marginLeft =
-            `${x * amount}px`;
-
-          memory.style.marginTop =
-            `${y * amount}px`;
-
-        });
-
-      }
-    );
-
-
-    /* ================================================
-       SURPRISE / FIREWORKS
-    ================================================= */
-
-    surpriseBtn.addEventListener("click", () => {
-
-      launchFireworks();
-
-      setTimeout(() => {
-        modal.classList.add("active");
-      }, 1500);
-
-    });
-
-
-    function launchFireworks() {
-
-      const duration = 4500;
-
-      const end = Date.now() + duration;
-
-      const defaults = {
-        startVelocity: 30,
-        spread: 360,
-        ticks: 70,
-        zIndex: 9500
-      };
-
-
-      function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-      }
-
-
-      const interval = setInterval(() => {
-
-        const timeLeft =
-          end - Date.now();
-
-        if (timeLeft <= 0) {
-
-          clearInterval(interval);
-          return;
-
-        }
-
-
-        const particleCount =
-          40 * (timeLeft / duration);
-
-
-        confetti({
-          ...defaults,
-          particleCount,
-          origin: {
-            x: randomInRange(.1, .3),
-            y: randomInRange(.2, .7)
-          }
-        });
-
-
-        confetti({
-          ...defaults,
-          particleCount,
-          origin: {
-            x: randomInRange(.7, .9),
-            y: randomInRange(.2, .7)
-          }
-        });
-
-
-      }, 250);
-
-
-      /* Center burst */
-
-      setTimeout(() => {
-
-        confetti({
-          particleCount: 180,
-          spread: 100,
-          startVelocity: 45,
-          origin: {
-            x: .5,
-            y: .5
-          }
-        });
-
-      }, 300);
-
-    }
-
-
-    /* ================================================
-       MODAL
-    ================================================= */
-
-    closeModal.addEventListener("click", () => {
-      modal.classList.remove("active");
-    });
-
-
-    modal.addEventListener("click", (e) => {
-
-      if (e.target === modal) {
-        modal.classList.remove("active");
-      }
-
-    });
-
-
-    /* ================================================
-       ESC CLOSE
-    ================================================= */
-
-    document.addEventListener("keydown", (e) => {
-
-      if (e.key === "Escape") {
-        modal.classList.remove("active");
-      }
-
-    });
-
-
-    /* ================================================
-       CURSOR GLOW
-    ================================================= */
-
-    const cursorGlow =
-      document.createElement("div");
-
-    cursorGlow.style.position = "fixed";
-    cursorGlow.style.width = "250px";
-    cursorGlow.style.height = "250px";
-    cursorGlow.style.borderRadius = "50%";
-    cursorGlow.style.pointerEvents = "none";
-    cursorGlow.style.zIndex = "9997";
-    cursorGlow.style.background =
-      "radial-gradient(circle, rgba(255,255,255,.035), transparent 65%)";
-    cursorGlow.style.transform =
-      "translate(-50%, -50%)";
-
-    document.body.appendChild(cursorGlow);
-
-
-    window.addEventListener("mousemove", (e) => {
-
-      cursorGlow.style.left = e.clientX + "px";
-      cursorGlow.style.top = e.clientY + "px";
-
-    });
-
-
-    /* ================================================
-       PAGE VISIBILITY
-    ================================================= */
-
-    document.addEventListener(
-      "visibilitychange",
-      () => {
-
-        if (document.hidden) {
-          return;
-        }
-
-      }
-    );
-
   </script>
-
 </body>
 </html>
